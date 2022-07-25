@@ -1,4 +1,5 @@
 # Parallel Programming Playground
+
 Based on this playlist by Tom Nurkkala: [Link to the playlist]([https://](https://www.youtube.com/watch?v=bHgz3KLnQlY&list=PLG3vBTUJlY2HdwYsdFCdXQraInoc3j9DU))
 
 And the books:
@@ -23,15 +24,16 @@ Dependencies:
 ## Topics
 
 1. Flynn's Taxonomy
-2. Memory mangement in Unix/Linux
-3. Process and Fork
-4. POSIX threads aka. pthreads
-5. C++11 threads
-6. Make
-7. OpenMP
-8. Graphics
-9. CUDA
-10. Parallel Algorithms
+2. Performance Metrics
+3. Memory mangement in Unix/Linux
+4. Process and Fork
+5. POSIX threads aka. pthreads
+6. C++11 threads
+7. Make
+8. OpenMP
+9. Graphics
+10. CUDA
+11. Parallel Algorithms
 
 ### 1. Flynn's Taxonomy
 
@@ -57,11 +59,39 @@ Race condition is when two processing units are trying to read/write the same pa
 
 The Distributed Memory also gets further divided into Master-Worker and Symmetric sub-classes.
 In Distributed Memory class, each CPU has a local memory and the cpus and the memories are connected to each other using a data line. For example a cluster of workstations connected to eachother using a network e.g, a LAN or an ethernet cable. The CPUs can be symmetric, meaning all CPUs are equivalent (and can do anything, MI).
-Or, Master-Worker, where different CPUs perform different tasks; In GPU system, GPU a "worker". In this case there is an architectural difference between CPUs.
+Or, Master-Worker, where different CPUs perform different tasks; In GPU system, GPU a "worker". In this case there is an architectural difference between CPUs. One is a normal CPU and the other is a GPU. But this class can be applied into several CPUs in which one or few of them are responsible for orchestrating and managing the work of the remaining bunch of CPUs. In this case the nature of task is different as opposed to the architecture and intrinsics of the CPUs.
+
+#### Newer Classes
+
+There have been newer classes emerged since the Flynn's original purposal for the classes.
+
+1. SIMT (Single Instruction, Multiple Thread; Introduced by nVidia, allows threads to diverge and converge, simplifies programming since it is higher level, diverging threads reduce performance.) (Similar to SIMD)
+2. SPMD (Single Program, Multiple Data, Each processor runs same program not the same thread as in SIMD, Independent Execution/Control (Program Counter) per CPU.) (Similar MIMD)
+
+### 2. Performance Metrics
+
+#### Speedup (S)
+
+t_1: runtime on \#1 processor using best sequential algorithm. t_p: run time on \#p processors using the parallel algorithm.
+
+`S = t_1/t_p;`
+
+* S is in range \[1,p\]
+* S = p is called linear speadup - very rare
+* t_p is measured in "wall clock time"
+* Notoriously hard to measure accurately
+* Influenced bt programmer, compiler, OS, load etc.
+* Must test under identical hardware and software, identical operational conditions (e.g., load)
+* Use fastest sequential algorithm available
+
+#### Efficiency
+
+`E=`
+
 
 ### 2. Memory mangement in Unix/Linux
 
-When an executable wants to start running in Unix based Operating Systems it firstly gets written to Memory and Operating System issues the executable (application), a virtual memory which behaves as if it is infinitly big. This part of memory gets managed by the operating system. This way we create an isolation for the program and increase the security of the execution. The reason for this is that the program can not access parts of the memory which does not belong to it. However, in a case the program needs more memory it never runs out of memory. In this case the operating system gaurantess that it will provide the needed memory the program. In case the demanded memory was larger than the systems capabilities meaning it is greater than the available free memory of the system (RAM in modern computers), the program runs into stackoverflow error. 
+When an executable wants to start running in Unix based Operating Systems it firstly gets written to Memory and Operating System issues the executable (application), a virtual memory which behaves as if it is infinitly big. This part of memory gets managed by the operating system. This way we create an isolation for the program and increase the security of the execution. The reason for this is that the program can not access parts of the memory which does not belong to it. However, in a case the program needs more memory it never runs out of memory. In this case the operating system gaurantess that it will provide the needed memory the program. In case the demanded memory was larger than the systems capabilities meaning it is greater than the available free memory of the system (RAM in modern computers), the program runs into stackoverflow error.
 
 In Distributed Memory class we do not have the problem of race condition and memory access; however, now we need to come up with some way to access and share data between CPUs using the network
 
