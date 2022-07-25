@@ -34,7 +34,29 @@ Parallel and distributed systems are classified into 4 different categories base
 
 ### 2. Memory mangement in Unix/Linux
 
+When an executable wants to start running in Unix based Operating Systems it firstly gets written to Memory and Operating System issues the executable (application), a virtual memory which behaves as if it is infinitly big. This part of memory gets managed by the operating system. This way we create an isolation for the program and increase the security of the execution. The reason for this is that the program can not access parts of the memory which does not belong to it. However, in a case the program needs more memory it never runs out of memory. In this case the operating system gaurantess that it will provide the needed memory the program. In case the demanded memory was larger than the systems capabilities meaning it is greater than the available free memory of the system (RAM in modern computers), the program runs into stackoverflow error.
+
+#### 2.1 Memory Layout
+
+The layout of memory in a Unix based OS:
+
+| Code | Static Memory | Heap ...->|...|<-...Stack|
+
+Lower Memory ---------------------> Higher Memory
+
+The Code gets and the Static Memory are located in lower address spaces and the Stack, in the higher parts of the memory. Heap grow towards higher Memory adresses and the Stack grows towards lower addresses. The memory space between Stack and Heap is managed by the OS and it is usually considerably large that we do not run into issues of these two memory addresses colliding.
+
+#### 2.2 Static Memory
+
+The executable consits of different parts. The Static part which its values and sizes are known and determind at the compile time. This part consists of Static Memory and the Code. This part of the application is called static part. which gets uploaded to the memory in static part of the memory in applicaions. The size of Static part of memory never changes and stays the same. However, this does not mean the values at this part of memory are immutable. Global variables ad=nd variables marked with static get saved in this part of memory and they do not get deleted until the termination of the program.
+
+#### 2.3 Heap And Stack
+
+Heap and Stack are part of the memory which their size can be changed during runtime. Runtime means the execution of the program. The Heap is also called the Dynamic Memory which can be increased by the programmer. For example in C we can use `malloc()` call and in C++ we can do it using `new` call or operator. The Stack and its size gets determined by the compiler at compile time. For this reason anything that needs to be defined in stack, needs to have a known and determined size. This is the reason for example why we need to know the size of arrays in C and C++. Since, arrays get allocated in the stack. Stack is last in first out type of data structure and it is much faster compared to heap. That is why accessing data which is on the stack is reletivly faster than accessing data which is located in heap (dynamic memory).
+
 ### 3. Process and Fork
+
+The fork() call provides us with the option to be able to create a new process.
 
 ```c
 // a cheat sheet for Process handling in C/C++
@@ -97,5 +119,4 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
 
 pthread_cond_signal(pthread_cond_t *cond);
-
 ```
