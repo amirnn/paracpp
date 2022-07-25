@@ -86,8 +86,19 @@ t_1: runtime on \#1 processor using best sequential algorithm. t_p: run time on 
 
 #### Efficiency
 
-`E=`
+Expresses how well a parallel algorithms makes use of available computing resources.
 
+p: \#processors
+
+`E = S/p = t_1/(p . t_p)`
+
+* E is in reange \(0, 1\]
+* sometimes expressed as percentage
+* Linear speedup gives E = p/p = 1 (100%) very rare
+* Always run-time overhead
+  * communication overhead
+  * contention over shared memory
+  * unbalanced workload -> idle CPUs
 
 ### 2. Memory mangement in Unix/Linux
 
