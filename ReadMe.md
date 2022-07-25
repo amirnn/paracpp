@@ -48,7 +48,7 @@ In MIMD each processor can execute its own discrete instruction, However, in SIM
 
 #### MIMD
 
-The MIMD class gets divided into two different classes.
+The MIMD class gets divided into two different sub-classes.
 
 1. Shared Memory (All CPUs can access the memory, Simpler, Limited Scalability, Harder to manifacture since the memory access dominates the chip, Race Conditions.)
 2. Distributed Memory (Master-Worker and Symmetric)
@@ -58,7 +58,7 @@ The Shared Memory is the default architecture for most common processors these d
 Race condition is when two processing units are trying to read/write the same part of memory. This can result in undefined and undeterministic outcomes.
 
 The Distributed Memory also gets further divided into Master-Worker and Symmetric sub-classes.
-In Distributed Memory class, each CPU has a local memory and the cpus and the memories are connected to each other using a data line. For example a cluster of workstations connected to eachother using a network e.g, a LAN or an ethernet cable. The CPUs can be symmetric, meaning all CPUs are equivalent (and can do anything, MI).
+In Distributed Memory class, each CPU has a local memory and the cpus and the memories are connected to each other through a data line. For example a cluster of workstations connected to eachother using a network e.g., a LAN or an ethernet cable. The CPUs can be symmetric, meaning all CPUs are equivalent (and can do anything hence, MI).
 Or, Master-Worker, where different CPUs perform different tasks; In GPU system, GPU a "worker". In this case there is an architectural difference between CPUs. One is a normal CPU and the other is a GPU. But this class can be applied into several CPUs in which one or few of them are responsible for orchestrating and managing the work of the remaining bunch of CPUs. In this case the nature of task is different as opposed to the architecture and intrinsics of the CPUs.
 
 #### Newer Classes
