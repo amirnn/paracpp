@@ -1,6 +1,11 @@
 # Parallel Programming Playground
 Based on this playlist: [link to...]([https://](https://www.youtube.com/watch?v=bHgz3KLnQlY&list=PLG3vBTUJlY2HdwYsdFCdXQraInoc3j9DU))
 
+And the books:
+
+1. C++ concurrency in Action by Anthony Williams
+2. GPU Parallel Program Development Using CUDA By Tolga Soyata
+
 ## Dependency installation
 
 I am using conan for dependency management.
@@ -56,7 +61,7 @@ Heap and Stack are part of the memory which their size can be changed during run
 
 ### 3. Process and Fork
 
-The fork() call provides us with the option to be able to create a new process.
+The fork() call provides us with the option to be able to create a new process. This approach has a considerbale amount of overhead and is not necessaraly the best approach. That is why the pthreads got theorized, standardized and implemented.
 
 ```c
 // a cheat sheet for Process handling in C/C++
@@ -73,7 +78,11 @@ int   signal(int signum, void (*sighandler)(int));
 
 ### 4. POSIX threads aka. pthreads
 
-For compiling once needs to include -lpthread.
+The POSIX threads are the standard and traditional way of creating threads in UNIX based operating systems. They are much lighter and have less overhead than using `fork()` to create execution units.
+
+The static part of the memory address and the Heap (dynamic memory) of the program gets shared between pthreads. However, each thread gets its own exclusive Stack in the memory. This makes pthreads of a MIMD class in Flynn's division of Parallel Systems.
+
+For compiling a program with pthreads one needs to link it to program using `-lpthread`.
 
 ```c
 // a cheat sheet for pthread creation and handling
@@ -120,3 +129,7 @@ pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
 
 pthread_cond_signal(pthread_cond_t *cond);
 ```
+
+
+## License
+MIT
