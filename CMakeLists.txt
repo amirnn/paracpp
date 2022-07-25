@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(${CMAKE_SOURCE_DIR}/conan/deploy/conanbuildinfo.cmake)
 conan_basic_setup()
 
+find_package(Threads REQUIRED)
 
 add_subdirectory("lib")
 
