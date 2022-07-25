@@ -1,5 +1,5 @@
 # Parallel Programming Playground
-Based on this playlist: [link to...]([https://](https://www.youtube.com/watch?v=bHgz3KLnQlY&list=PLG3vBTUJlY2HdwYsdFCdXQraInoc3j9DU))
+Based on this playlist by Tom Nurkkala: [Link to the playlist]([https://](https://www.youtube.com/watch?v=bHgz3KLnQlY&list=PLG3vBTUJlY2HdwYsdFCdXQraInoc3j9DU))
 
 And the books:
 
@@ -35,16 +35,35 @@ Dependencies:
 
 ### 1. Flynn's Taxonomy
 
-Parallel and distributed systems are classified into 4 different categories based on instruction and memory handling. That is Instruction can be carried out in a Single or Multiple fashion. Meaning at a given time, a single instruction or multiple instructrions can be in midst of execution. This also applys to the Memory access. At a given time a single or multiple data are being read/write. Considering these different possibilites, we have 4 different classes refered as Flynn's Taxonomy.
+Parallel and distributed systems are classified into 4 different categories based on instruction and memory handling. That is the instruction can be carried out in a Single or Multiple fashion. Meaning, at a given time, a single stream of instruction or multiple stream instructrions can be in the midst of execution. This also applys to the Memory access. At a given time a single or multiple data are being read/write. Considering these different possibilites, we have 4 different classes refered to as Flynn's Taxonomy.
 
-1. SISD (Single Instruction Single Data, Conventional one porcessor design.)
-2. SIMD (Single Instruction, Multiple Data, Used in GPUs)
-3. MISD (Multiple Instruction Single Data, Fault tollerant system design)
-4. MIMD (Multiple Instuction Multiple Data Used in distributed systems)
+1. SISD (Single Instruction Stream using Single Data; Conventional one processor, sequential machine.)
+2. SIMD (Single Instruction Stream using Multiple Data; Used in GPUs, each instruction is applied on a vector.)
+3. MISD (Multiple Instruction Streams using Single Data; Fault tollerant system design, increase reliability.)
+4. MIMD (Multiple Instuction Streams using Multiple Data; Multicore CPUs, Distributed Systems.)
+
+In MIMD each processor can execute its own discrete instruction, However, in SIMD it is the same instruction which gets executed in different processing units. This makes MIMD more flexable and Generic and also more complex.
+
+#### MIMD
+
+The MIMD class gets divided into two different classes.
+
+1. Shared Memory (All CPUs can access the memory, Simpler, Limited Scalability, Harder to manifacture since the memory access dominates the chip, Race Conditions.)
+2. Distributed Memory (Master-Worker and Symmetric)
+
+The Shared Memory is the default architecture for most common processors these days. Each processor has various CPUs and they share a common memory. They are independent processors and hence we have MI; They got different caches (L1 and L2) which are exclusive and unique to them, but they share the same level 3 cache (L3) and memory space (main memory).
+
+Race condition is when two processing units are trying to read/write the same part of memory. This can result in undefined and undeterministic outcomes.
+
+The Distributed Memory also gets further divided into Master-Worker and Symmetric sub-classes.
+In Distributed Memory class, each CPU has a local memory and the cpus and the memories are connected to each other using a data line. For example a cluster of workstations connected to eachother using a network e.g, a LAN or an ethernet cable. The CPUs can be symmetric, meaning all CPUs are equivalent (and can do anything, MI).
+Or, Master-Worker, where different CPUs perform different tasks; In GPU system, GPU a "worker". In this case there is an architectural difference between CPUs.
 
 ### 2. Memory mangement in Unix/Linux
 
-When an executable wants to start running in Unix based Operating Systems it firstly gets written to Memory and Operating System issues the executable (application), a virtual memory which behaves as if it is infinitly big. This part of memory gets managed by the operating system. This way we create an isolation for the program and increase the security of the execution. The reason for this is that the program can not access parts of the memory which does not belong to it. However, in a case the program needs more memory it never runs out of memory. In this case the operating system gaurantess that it will provide the needed memory the program. In case the demanded memory was larger than the systems capabilities meaning it is greater than the available free memory of the system (RAM in modern computers), the program runs into stackoverflow error.
+When an executable wants to start running in Unix based Operating Systems it firstly gets written to Memory and Operating System issues the executable (application), a virtual memory which behaves as if it is infinitly big. This part of memory gets managed by the operating system. This way we create an isolation for the program and increase the security of the execution. The reason for this is that the program can not access parts of the memory which does not belong to it. However, in a case the program needs more memory it never runs out of memory. In this case the operating system gaurantess that it will provide the needed memory the program. In case the demanded memory was larger than the systems capabilities meaning it is greater than the available free memory of the system (RAM in modern computers), the program runs into stackoverflow error. 
+
+In Distributed Memory class we do not have the problem of race condition and memory access; however, now we need to come up with some way to access and share data between CPUs using the network
 
 #### 2.1 Memory Layout
 
