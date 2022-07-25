@@ -8,13 +8,17 @@ And the books:
 
 ## Dependency installation
 
-I am using conan for dependency management.
+I am using conan for dependency management. To install dependencies,
 
 ```shell
 # execute the commands below
 $ cd conan/deploy
 $ cd conan install .. --build=missing
 ```
+
+Dependencies:
+
+1. DOCTEST
 
 ## Topics
 
@@ -27,6 +31,7 @@ $ cd conan install .. --build=missing
 7. OpenMP
 8. Graphics
 9. CUDA
+10. Parallel Algorithms
 
 ### 1. Flynn's Taxonomy
 
@@ -130,6 +135,6 @@ pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
 pthread_cond_signal(pthread_cond_t *cond);
 ```
 
-
 ## License
-MIT
+
+MIT Based.
