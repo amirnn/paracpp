@@ -118,15 +118,54 @@ The Code gets and the Static Memory are located in lower address spaces and the 
 
 #### 3.2 Static Memory
 
-The executable consits of different parts. The Static part which its values and sizes are known and determind at the compile time. This part consists of Static Memory and the Code. This part of the application is called static part. which gets uploaded to the memory in static part of the memory in applicaions. The size of Static part of memory never changes and stays the same. However, this does not mean the values at this part of memory are immutable. Global variables ad=nd variables marked with static get saved in this part of memory and they do not get deleted until the termination of the program.
+The executable consits of different parts. The Static part which its values and sizes are known and determind at the compile time. This part consists of Static Memory and the Code. This part of the application is called static part. which gets uploaded to the memory in static part of the memory in applicaion's memory space. The size of Static part of memory never changes and stays the same. However, this does not mean the values at this part of memory are immutable. Global variables and variables marked with static get saved in this part of memory and they do not get deleted until the termination of the program.
 
 #### 3.3 Heap And Stack
 
 Heap and Stack are part of the memory which their size can be changed during runtime. Runtime means the execution of the program. The Heap is also called the Dynamic Memory which can be increased by the programmer. For example in C we can use `malloc()` call and in C++ we can do it using `new` call or operator. The Stack and its size gets determined by the compiler at compile time. For this reason anything that needs to be defined in stack, needs to have a known and determined size. This is the reason for example why we need to know the size of arrays in C and C++. Since, arrays get allocated in the stack. Stack is last in first out type of data structure and it is much faster compared to heap. That is why accessing data which is on the stack is reletivly faster than accessing data which is located in heap (dynamic memory).
 
-### 4. Process and Fork
+### 4. Unix Processs and Fork System Call
 
-The fork() call provides us with the option to be able to create a new process. This approach has a considerbale amount of overhead and is not necessaraly the best approach. That is why the pthreads got theorized, standardized and implemented.
+The fork() call provides us with the option to be able to create a new duplicate process. This approach has a considerbale amount of overhead and is not necessaraly the best approach. That is why the pthreads got theorized, standardized and implemented.
+
+* Complete copy of all code and data
+* Return value
+  * if in Parent: pid of child
+  * if in Child: 0
+* Child behavior
+  * Typical: call `exec` system call to load/run new program
+  * Parallel: select and solve problem parition
+* Analysis
+  * Maximum flexibility: can `exec` new program
+  * Can run on own core: parallelism
+  * Considerable memory overhead
+  * Time consuming
+
+```c
+// example
+
+#include <sys/types.h>
+#include <unistd.h>
+
+int main (int argc, const char ** argv){
+  
+  pid_t child_id;
+  child_id = fork();
+  if (child_id == 0){
+    std::cout << "This is a child process." << std::endl;
+  } else {
+    std::cout << "This is the parent process." << std::endl;
+  }
+  return 0;
+}
+```
+
+#### fork() in Memory
+
+Fork duplicates the process and creates a child process. Initially after the fork() call and initialization of the child process the Code, Data and Heap parts of the memory are shared between Child process and the Parent process. Eventhough, both process get their own distinct and seperate Stacks. This is due to the virtaul memory and that the child process gets mapped to the same virutal memory space (page of memory) of the parent memory space. Hence, it can access these shared parts. But as soon as one of the processes wants to make a change in this page of memory, that is altering a value in Heap or Data part of the memory space (Code would not change) or the child process starts `exec` by executing, the opertaing system stops the process and creates a new memory page (virtual memory space) and seperates these two processes; The OS reinitilizes the Heap and Data part of the memory for the child process such that each process get their own private memory space. This results in lack of access between these two processes from that point on. So, we will have read access in the beginning and no write acces using this method. But as soon as the child process gets executed we lose access to the shared memory. In other words we can not utilizer the shared memory since we can not execute any additional code and when we do we lose access to the shared data.
+
+|Code|Data|Heap|Stack| ... |Code|Data|Heap|Stack|
+
 
 ```c
 // a cheat sheet for Process handling in C/C++
@@ -145,7 +184,41 @@ int   signal(int signum, void (*sighandler)(int));
 
 The POSIX threads are the standard and traditional way of creating threads in UNIX based operating systems. They are much lighter and have less overhead than using `fork()` to create execution units.
 
-The static part of the memory address and the Heap (dynamic memory) of the program gets shared between pthreads. However, each thread gets its own exclusive Stack in the memory. This makes pthreads of a MIMD class in Flynn's division of Parallel Systems.
+The static part of the memory address (Code + Data) and the Heap (dynamic memory) of the program gets shared between pthreads. However, each thread gets its own exclusive Stack in the memory. This makes pthreads of Shared Memory sub-class in the MIMD class of Flynn's division of Parallel Systems.
+
+* Lightweight Process
+* Multiple threads per process
+* Managed by OS
+* Analysis
+  * Only need to allocate per-thread stack
+  * Stack private to each thread
+  * Can run on own core: parallelism
+  * \[x\] Memory shared among threads: troublesome
+
+|Code|Data|Heap|...|Stack|...|Stack|
+
+#### 5.1 Thread Implemetations
+
+1. POSIX Threads (pthread)
+2. C++11 Threads
+   1. std::thread
+3. Qt Threads
+4. Boost Threads
+
+```c++
+// example of C++ threads
+#include <thread>
+#include <iostream>
+
+void hello(){ std::cout << "Hello!" << std::endl; }
+
+int main() {
+  thread thr {hello};
+  std::cout << "Hello form Parent!" << std::endl;
+  thr.join();
+  return 0;
+}
+```
 
 For compiling a program with pthreads one needs to link it to program using `-lpthread`.
 
