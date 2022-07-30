@@ -12,9 +12,10 @@ And the books:
 I am using conan for dependency management. To install dependencies,
 
 ```shell
-# execute the commands below
+# Execute the commands below
 $ cd conan/deploy
-$ cd conan install .. --build=missing
+# Choose profile based on platform and desired compiler
+$ conan install .. --profile=../profile/linux/clang --build=missing
 ```
 
 Dependencies:
@@ -267,6 +268,15 @@ pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
 
 pthread_cond_signal(pthread_cond_t *cond);
 ```
+
+### 6. C++11 threads
+
+This chapter is based on the books Stroustroup Bjourne A Tour of C++, C++ Concurrency in Action which demonsterate C++11 thread library. This library is implemented in C++ Standard runtime library for each platform and hence we can use it in a crossplatform manner. It abstracts away some of the details therefore makes life of the programmer much easier.
+
+
+
+
+
 
 ## License
 

@@ -20,6 +20,8 @@ add_subdirectory("src")
 enable_testing()
 add_subdirectory("tests")
 
+# build book
+add_subdirectory("book")
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
