@@ -215,12 +215,14 @@ void hello(){ std::cout << "Hello!" << std::endl; }
 int main() {
   thread thr {hello};
   std::cout << "Hello form Parent!" << std::endl;
-  thr.join();
+  thr.join(); // Wait for the thread thr to finish. This is a blocking call.
   return 0;
 }
 ```
 
-For compiling a program with pthreads one needs to link it to program using `-lpthread`.
+#### POSIX threads
+
+Note: For compiling a program with pthreads one needs to link it to program using `-lpthread`.
 
 ```c
 // a cheat sheet for pthread creation and handling
@@ -229,12 +231,16 @@ For compiling a program with pthreads one needs to link it to program using `-lp
 /**
  * @brief Creates a pthread.
  * @arg thread: pthread_t * the pointer to created thread by this call.
+ * @arg attr: attributes of the thread we need to start usually is left as NULL
  * @arg start_routine: A Generic fucntion pointer that will get exectued 
  * once the thread starts
  * @arg arg: a generice pointer to the argument of the start_routine funtion.
  * @returns 0 if there was an error.
 */
-pthread_create(pthread_t *thread, NULL, void *(*start_routine) (void *), void *arg);
+pthread_create( pthread_t *thread,
+                const pthread_attr_t *attr, 
+                void *(*start_routine) (void *), 
+                void *arg);
 
 
 /**
