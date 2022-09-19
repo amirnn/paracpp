@@ -1,0 +1,14 @@
+[settings]
+os=Windows
+os_build=Windows
+arch=x86_64
+arch_build=x86_64
+compiler=clang
+compiler.version=15
+compiler.libcxx=libc++
+build_type=Release
+[options]
+[build_requires]
+[env]
+CC=C:\Program Files\LLVM\bin\clang
+CXX=C:\Program Files\LLVM\bin\clang++
