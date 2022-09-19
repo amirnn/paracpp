@@ -17,8 +17,5 @@ pid_t create_fork(){
 
 int main(int, char**) {
 
-
-
-
     std::cout << "Hello, world!\n";
 }

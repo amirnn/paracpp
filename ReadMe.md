@@ -16,6 +16,10 @@ I am using conan for dependency management. To install dependencies,
 $ cd conan/deploy
 # Choose profile based on platform and desired compiler
 $ conan install .. --profile=../profile/linux/clang --build=missing
+# For Windows select the desired
+$ conan install .. --profile=../profile/windows/clang --build=missing
+$ conan install .. --profile=../profile/windows/visualstudio --build=missing
+
 ```
 
 Dependencies:
