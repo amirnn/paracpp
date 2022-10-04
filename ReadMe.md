@@ -19,7 +19,8 @@ $ conan install .. --profile=../profile/linux/clang --build=missing
 # For Windows select the desired
 $ conan install .. --profile=../profile/windows/clang --build=missing
 $ conan install .. --profile=../profile/windows/visualstudio --build=missing
-
+# For MacOS
+$ conan install .. --profile=../profile/macos/clang --build=missing
 ```
 
 Dependencies:
