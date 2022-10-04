@@ -8,7 +8,7 @@
 #define NUM_THREADS 8
 #define NUM_RECORDS_PER_THREAD (NUM_RECORDS / NUM_THREADS)
 
-#define ALWAYS_LOCK 0
+#define ALWAYS_LOCK 1
 #define FAKE_WORK usleep(1000)
 
 // MOCK APPLICATION DATA STRUCTURE
@@ -33,7 +33,7 @@ pthread_mutex_t match_count_mutex;
 
 void *find_matches(void *thread_args) {
   thread_args_t *args = (thread_args_t *)thread_args;
-  printf("%d: %p[%d]\n", args->tid, (void *)args->start, args->target);
+  printf("%d: %p[%d]\n", args->tid, (void *)args->start, args->count);
 
 #if ALWAYS_LOCK
   for (int i = 0; i < args->count; i++) {
@@ -49,7 +49,7 @@ void *find_matches(void *thread_args) {
 #else //! ALWAYS_LOCK
   int local_matches = 0; // local matches
   int busy_count = 0;    // times lock busy
-  for (size_t i = 0; i < args->count; ++i) {
+  for (int i = 0; i < args->count; ++i) {
     int match = records_match(&args->start[i], args->target);
 
     if (match) {
@@ -91,7 +91,7 @@ void check_thread_rtn(const char *msg, int rtn) {
 
 int blocking_rand(int min, int max) { return (random() % max) + min; }
 
-int main(int argc, char const *argv[]) {
+int main(/* int argc, char const *argv[] */) {
 
   pthread_t threads[NUM_THREADS];
   thread_args_t thread_args[NUM_THREADS];
