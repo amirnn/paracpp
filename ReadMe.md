@@ -27,6 +27,25 @@ Dependencies:
 
 1. DOCTEST
 
+## VSCode Setup
+If a kit was not found by vscode, you can add it manually.
+In vscode issue the command -> Edit User-Local cmake kits. And add the following to it.
+You can adjust it to represent the correct values on your system.
+
+```json
+{
+  "name": "Clang 15.0.1 from Brew",
+  "compilers": {
+    "C": "/usr/local/opt/llvm/bin/clang",
+    "CXX": "/usr/local/opt/llvm/bin/clang++"
+  },
+  "environmentVariables":{
+    "LDFLAGS": "-L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++ -L/usr/local/opt/llvm/lib",
+    "CPPFLAGS": "-I/usr/local/opt/llvm/include"
+  }
+}
+```
+
 ## Topics
 
 1. Flynn's Taxonomy

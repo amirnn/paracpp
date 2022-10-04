@@ -1,0 +1,14 @@
+// command -> Edit User-Local cmake kits
+// Add the following.
+
+{
+  "name": "Clang 15.0.1 from Brew",
+  "compilers": {
+    "C": "/usr/local/opt/llvm/bin/clang",
+    "CXX": "/usr/local/opt/llvm/bin/clang++"
+  },
+  "environmentVariables":{
+    "LDFLAGS": "-L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++ -L/usr/local/opt/llvm/lib",
+    "CPPFLAGS": "-I/usr/local/opt/llvm/include"
+  }
+}
