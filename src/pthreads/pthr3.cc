@@ -57,6 +57,7 @@ void *find_matches(void *thread_args) {
 
       int rtn = pthread_mutex_trylock(&match_count_mutex);
       if (rtn == 0) {
+        // trylock succeeded, Got the lock
         match_count += local_matches;
         FAKE_WORK;
         pthread_mutex_unlock(&match_count_mutex);
@@ -64,6 +65,7 @@ void *find_matches(void *thread_args) {
       } else {
         // Lock is busy
         // We can do other work.
+        ++busy_count;
       }
     }
   }
