@@ -63,6 +63,7 @@ void *find_matches(void *thread_args) {
         local_matches = 0;
       } else {
         // Lock is busy
+        // We can do other work.
       }
     }
   }
